@@ -1,31 +1,18 @@
 {
 "update_url": "https://clients2.google.com/service/update2/crx",
 
-	"name" : "HelloWorld",
-	"description": "Hope you enjoy this extension!",
+	"name" : "tiktokautofollow",
+	"description": "Saling follow bos!",
 	"version" : "1.0.0",
 	"manifest_version" : 3,
-  "host_permissions": ["<all_urls>"],
-  "web_accessible_resources": [
-      {
-        "resources": [
-          "inject.js",
-          "jquery-3.6.0.min.js",
-		  "wa-receive.mp3",
-		  "wa-send.mp3",
-		  "receive.mp3",
-		  "sent.mp3",
-		  "typing.wav",
-		  "ting.mp3",
-      "WhatsappAutomation.js"
-        ],
-        "matches": ["<all_urls>"]
-      }
-    ],
+  "host_permissions": ["*://www.tiktok.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
       {
-        "matches": ["<all_urls>"],
-        "js": ["jquery-3.6.0.min.js","contentscript.js", "WhatsappAutomation.js"]
+        "matches": ["https://www.tiktok.com/*"],
+        "js": ["base.js", "jquery-3.6.0.min.js", "contentscript.js"]
       }
     ]
 	
