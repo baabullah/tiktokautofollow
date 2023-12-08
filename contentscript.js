@@ -195,8 +195,10 @@ class ContentScript {
 			var messagesBtn = _this.getMessagesButton();
 			var requestedBtn = _this.getRequestedButton();
 			if (messagesBtn != null || requestedBtn != null) {
-				_this.useCase.followBacklog(_this.sourceUsername, function (){
-					console.log("done follow backlog");
+				_this.useCase.updateFollow(sourceUser, targetUser, function (){
+					_this.useCase.followBacklog(_this.sourceUsername, function (){
+						console.log("done follow backlog");
+					});
 				});
 			} else {	
 				setTimeout(function () {
