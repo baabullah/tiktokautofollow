@@ -84,11 +84,12 @@ class UseCase {
 					|| window.location.href == "https://www.tiktok.com/foryou") {
 						if (window.confirm("You have new friends to follow. Do it now?")) {
 							window.location.href = "https://www.tiktok.com/@" + backlog.users[0].username + "?action=tofollow&targetuser=" + backlog.users[0].username + "&sourceuser=" + sourceUsername;
-						} else {
-							window.location.href = "https://www.tiktok.com/@" + backlog.users[0].username + "?action=tofollow&targetuser=" + backlog.users[0].username + "&sourceuser=" + sourceUsername;
 						}
-					}
-										
+					} else {
+						if (window.location.href.indexOf("action=tofollow") != -1) {
+							window.location.href = "https://www.tiktok.com/@" + backlog.users[0].username + "?action=tofollow&targetuser=" + backlog.users[0].username + "&sourceuser=" + sourceUsername;
+						}							
+					}										
 				} else if (window.location.href.indexOf("action=tofollow") != -1) {
 					alert("Awesome, no user left to follow. Check back https://www.tiktok.com/ next time to see if you can get more followers!");
 				}
