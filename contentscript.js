@@ -82,7 +82,7 @@ class UseCase {
 					if (window.location.href == "https://www.tiktok.com/"
 					|| window.location.href == "https://www.tiktok.com"
 					|| window.location.href == "https://www.tiktok.com/foryou") {
-						if (window.confirm("You have " + backlog.users.length + " users to follow. Do it now?")) {
+						if (window.confirm("You have new friends to follow. Do it now?")) {
 							window.location.href = "https://www.tiktok.com/@" + backlog.users[0].username + "?action=tofollow&targetuser=" + backlog.users[0].username + "&sourceuser=" + sourceUsername;
 						} else {
 							window.location.href = "https://www.tiktok.com/@" + backlog.users[0].username + "?action=tofollow&targetuser=" + backlog.users[0].username + "&sourceuser=" + sourceUsername;
