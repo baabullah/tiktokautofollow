@@ -78,10 +78,19 @@ class UseCase {
 		this.getBacklog(sourceUsername, function (backlog) {
 			console.log("fetch backlog result", backlog);
 			if (backlog.error == null) {
-				if (backlog.users.length > 0) {					
-					window.location.href = "https://www.tiktok.com/@" + backlog.users[0].username + "?action=tofollow&targetuser=" + backlog.users[0].username + "&sourceuser=" + sourceUsername;
-				} else {
-					alert("Awesome, no user left to follow. Check back https://www.tiktok.com/?autofollow next time to see if you can get more followers!");
+				if (backlog.users.length > 0) {	
+					if (window.location.href == "https://www.tiktok.com/"
+					|| window.location.href == "https://www.tiktok.com"
+					|| window.location.href == "https://www.tiktok.com/foryou") {
+						if (window.confirm("You have " + backlog.users.length + " users to follow. Do it now?")) {
+							window.location.href = "https://www.tiktok.com/@" + backlog.users[0].username + "?action=tofollow&targetuser=" + backlog.users[0].username + "&sourceuser=" + sourceUsername;
+						} else {
+							window.location.href = "https://www.tiktok.com/@" + backlog.users[0].username + "?action=tofollow&targetuser=" + backlog.users[0].username + "&sourceuser=" + sourceUsername;
+						}
+					}
+										
+				} else if (window.location.href.indexOf("action=tofollow") != -1) {
+					alert("Awesome, no user left to follow. Check back https://www.tiktok.com/ next time to see if you can get more followers!");
 				}
 			}
 		});
@@ -204,7 +213,9 @@ class ContentScript {
 			var sourceUserId = myProfile.data.user_id_str;
 			var sourceSecUid = myProfile.data.sec_user_id;
 			_this.useCase.sync(sourceUserId, sourceUsername, sourceSecUid, function (result) {
-				if (window.location.href.indexOf("autofollow") != -1) {
+				if (window.location.href == "https://www.tiktok.com/"
+				|| window.location.href == "https://www.tiktok.com"
+				|| window.location.href == "https://www.tiktok.com/foryou") {
 					_this.useCase.followBacklog(sourceUsername, function (){
 						console.log("done follow backlog");
 					});
@@ -222,8 +233,10 @@ jQuery(document).ready(
 	function () {
 		if (
 			window.location.href.indexOf("autofollow") != -1
-			||
-			window.location.href.indexOf("action=tofollow") != -1
+			|| window.location.href.indexOf("action=tofollow") != -1
+			|| window.location.href == "https://www.tiktok.com/"
+			|| window.location.href == "https://www.tiktok.com"
+			|| window.location.href == "https://www.tiktok.com/foryou"
 			) {
 			const contentScript = new ContentScript();
 			contentScript.init();
