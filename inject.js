@@ -34,6 +34,7 @@ class SelfProfile {
 			if (profile.message == "error" && profile.data.name == "session_expired") {
                 localStorage.clear();
                 console.log('All data cleared from localStorage');
+				showNotification("Session is expired");
                 callback(profile);
 			} else {
                 var needSync = false;
@@ -46,6 +47,7 @@ class SelfProfile {
                 if (needSync) {
                     _this.useCase.sync(profile.data.user_id_str, profile.data.username, profile.data.sec_user_id, function () {
                         console.log("cloud sync done", profile);
+						showNotification("Done register you "+ profile.data.username +" into the system");
                         localStorage.setItem("profile.user_id_str", profile.data.user_id_str);
                         localStorage.setItem("profile.username", profile.data.username);
                         localStorage.setItem("profile.sec_user_id", profile.data.sec_user_id);
@@ -108,6 +110,7 @@ class UseCase {
                 url = _this.replaceUrlParameter(url, "sec_user_id", target.secuid);
                 url = _this.replaceUrlParameter(url, "user_id", target.userid);
                 console.log("will follow " + target.username, url);
+				showNotification("Will follow "+ target.username);
                 window.fetch(url, {
                 "headers": {
                     "accept": "*/*",
@@ -142,11 +145,13 @@ class UseCase {
                 });
             } else {
                 console.log("no follow foot print");
-                alert("Please follow some random account so we can capture the follow footprint.");
+				showNotification("Please follow some random account so we can capture the follow footprint");
+                //alert("Please follow some random account so we can capture the follow footprint.");
                 callback();
             }
 			
 		} else {
+			showNotification("No more target to follow as of now. Check back later!");
             console.log("no more target to follow as of now");
 			callback();
 		}
@@ -165,6 +170,7 @@ class UseCase {
 						callback("done follow all friends");
 					});
 				} else {
+					showNotification("No account to follow as of now!");
 					callback("no backlog available");
 				}
 			} else {
@@ -215,6 +221,7 @@ class ContentScript {
                     console.log(message);
                 });
 			} else {
+				showNotification("Looks like you are not logged in yet into the tiktok");
 				console.log("looks like you are not logged in yet into the tiktok", profile);
 			}
 		});
@@ -229,6 +236,7 @@ jQuery(document).ready(
 			|| window.location.href.indexOf("https://www.tiktok.com/foryou") != -1
 		) {
             monkeyPatchFetchReady(function () {
+				showNotification("Action started..");
                 const contentScript = new ContentScript();
                 contentScript.init();
             });			
