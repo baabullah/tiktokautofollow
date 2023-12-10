@@ -31,6 +31,7 @@ class SelfProfile {
 		}).then((result) => { return result.json(); })
 		.then((profile) => {
 			if (profile.message == "error" && profile.data.name == "session_expired") {
+                localStorage.clear();
 				chrome.storage.sync.clear(function() {
 					var error = chrome.runtime.lastError;
 					if (error) {

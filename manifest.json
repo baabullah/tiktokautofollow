@@ -9,6 +9,16 @@
   "background": {
     "service_worker": "background.js"
   },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "jquery-3.6.0.min.js",
+        "inject.js"
+      ],
+      "matches": [
+    "https://www.tiktok.com/*"]
+    }
+  ],
   "content_scripts": [
       {
         "matches": ["https://www.tiktok.com/*"],
