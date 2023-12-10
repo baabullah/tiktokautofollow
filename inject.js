@@ -129,7 +129,7 @@ class UseCase {
                 .then((json) => {                
                     _this.updateFollow(profile.data.username, target.username, function () {
                         if (_this.temp.length > 0) {
-                            console.log("update follow done, fetch next", json);
+                            console.log("update follow done, fetch next backlog", json);
                             setTimeout(function(){
                                 _this.follow(profile, callback);
                             }, 1000); 
@@ -142,12 +142,12 @@ class UseCase {
                 });
             } else {
                 console.log("no follow foot print");
-                alert("Please follow some random account so we can capture the footprint.");
+                alert("Please follow some random account so we can capture the follow footprint.");
                 callback();
             }
 			
 		} else {
-            console.log("no more target to follow");
+            console.log("no more target to follow as of now");
 			callback();
 		}
 	}
