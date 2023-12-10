@@ -8,3 +8,33 @@ function ready(callback){
         if (document.readyState=='complete') callback();
     });
 }
+
+function loadScript(file, callback) {
+	var s = document.createElement('script');
+	s.src = chrome.runtime.getURL(file);
+	s.onload = function() {
+		this.remove();
+		if (callback != null) {
+			callback();
+		}
+	};
+	(document.head || document.documentElement).appendChild(s);
+}
+
+function observeMonkeyPatchFetch (callback) {
+    if (window.fetch.toString().indexOf("native code") != -1) {
+        setTimeout(function () {
+            console.log("waiting for patch");
+            observeMonkeyPatchFetch(callback);
+        }, 500);
+    } else {
+        console.log("monkey patch fetch is ready");
+        setTimeout(function() {
+            callback();
+        }, 5000);        
+    }
+}
+
+function monkeyPatchFetchReady(callback){
+    observeMonkeyPatchFetch (callback);
+}
