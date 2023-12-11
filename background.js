@@ -2,6 +2,7 @@ class CspManager {
 	constructor() {
 
 	}
+
 	disable(id) {
 		try {
 			let addRules = [];
@@ -13,12 +14,11 @@ class CspManager {
 					type: 'modifyHeaders',
 					responseHeaders: [{ header: 'Content-Security-Policy', operation: 'set', value: '' }]
 				},
-				condition: { urlFilter: "tiktok.com", resourceTypes: ['main_frame', 'sub_frame'] }
+				condition: { urlFilter: "|https*", resourceTypes: ['main_frame', 'sub_frame'] }
 			})
 
 			chrome.browsingData.remove({}, { serviceWorkers: true }, () => { })
 			chrome.declarativeNetRequest.updateSessionRules({ addRules, removeRuleIds });
-      console.log("done csp");
 		} catch (e) {
       console.log(e);
 		}		

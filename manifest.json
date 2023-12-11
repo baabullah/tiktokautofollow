@@ -29,6 +29,7 @@
   "permissions": [
       "webRequest",
       "storage",
-      "declarativeNetRequest"
+      "declarativeNetRequest",
+      "browsingData"
     ]	
 }
