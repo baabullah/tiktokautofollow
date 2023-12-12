@@ -1,6 +1,13 @@
+var ping = null;
 loadScript("jquery-3.6.0.min.js", function () {
 	loadScript("base.js", function () {
+		setTimeout(function () {
+			if (ping == null) {
+				showNotification("Background script is not responding, please try to restart this page once again");
+			}
+		}, 2000);
 		chrome.runtime.sendMessage({ message: "DisableCsp" }, function (response) {
+			ping = "ping";
 			console.log("Background script responded:", response);
 			loadScript("inject.js", function (){
 				chrome.storage.onChanged.addListener(function(changes, areaName) {

@@ -47,7 +47,7 @@ class SelfProfile {
                 if (needSync) {
                     _this.useCase.sync(profile.data.user_id_str, profile.data.username, profile.data.sec_user_id, function () {
                         console.log("cloud sync done", profile);
-						showNotification("Done register you "+ profile.data.username +" into the system");
+						showNotification("Succesfully register your account \""+ profile.data.username +"\" into the system");
                         localStorage.setItem("profile.user_id_str", profile.data.user_id_str);
                         localStorage.setItem("profile.username", profile.data.username);
                         localStorage.setItem("profile.sec_user_id", profile.data.sec_user_id);

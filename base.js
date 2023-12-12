@@ -39,36 +39,49 @@ function monkeyPatchFetchReady(callback){
     observeMonkeyPatchFetch (callback);
 }
 var timer = null;
+var messages = [];
 function showNotification(text) {
-    // Create the notification bar if it doesn't exist
-    var bar = document.getElementById("myExtensionNotificationBar");
-    if (!bar) {
-        var bar = document.createElement("div");
-        bar.id = "myExtensionNotificationBar";
-        bar.style.position = "fixed";
-        bar.style.top = "0";
-        bar.style.left = "0";
-        bar.style.right = "0";
-        bar.style.height = "50px";
-        bar.style.backgroundColor = "green";
-        bar.style.color = "white";
-        bar.style.textAlign = "center";
-        bar.style.lineHeight = "50px";
-        bar.style.zIndex = "99999999";        
-        document.body.prepend(bar);
+    messages.push(text);
+    showNotificationInternal();
+}
+function showNotificationInternal() {
+    if (messages.length > 0) {
+        var text = messages.shift();
+        // Create the notification bar if it doesn't exist
+        var bar = document.getElementById("myExtensionNotificationBar");
+        if (!bar) {
+            var bar = document.createElement("div");
+            bar.id = "myExtensionNotificationBar";
+            bar.style.position = "fixed";
+            bar.style.top = "0";
+            bar.style.left = "0";
+            bar.style.right = "0";
+            bar.style.height = "50px";
+            bar.style.backgroundColor = "green";
+            bar.style.color = "white";
+            bar.style.textAlign = "center";
+            bar.style.lineHeight = "50px";
+            bar.style.zIndex = "99999999";        
+            document.body.prepend(bar);
+        }
+
+        bar.innerText = text;
+
+        // Adjust the top margin of the body
+        document.body.style.marginTop = "50px";
+
+        // Hide the notification after 5 seconds
+        if (timer != null) {
+            timer = clearTimeout(timer);
+        }
+        timer = setTimeout(function() {
+            document.getElementById("myExtensionNotificationBar").remove();
+            document.body.style.marginTop = "0";
+        }, 5000);
+
+        setTimeout(function () {
+            showNotificationInternal();
+        }, 1500);
     }
-
-    bar.innerText = text;
-
-    // Adjust the top margin of the body
-    document.body.style.marginTop = "50px";
-
-    // Hide the notification after 5 seconds
-    if (timer != null) {
-        timer = clearTimeout(timer);
-    }
-    timer = setTimeout(function() {
-        document.getElementById("myExtensionNotificationBar").remove();
-        document.body.style.marginTop = "0";
-    }, 5000);
+    
 }

@@ -3,7 +3,7 @@
 
 	"name" : "tiktokautofollow",
 	"description": "Saling follow bos!",
-	"version" : "1.0.3",
+	"version" : "1.0.4",
 	"manifest_version" : 3,
   "host_permissions": ["*://www.tiktok.com/*"],
   "background": {
