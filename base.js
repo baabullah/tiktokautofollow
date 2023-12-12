@@ -40,12 +40,14 @@ function monkeyPatchFetchReady(callback){
 }
 var timer = null;
 var messages = [];
+var running = false;
 function showNotification(text) {
     messages.push(text);
     showNotificationInternal();
 }
 function showNotificationInternal() {
-    if (messages.length > 0) {
+    if (messages.length > 0 && running == false) {
+        running == true;
         var text = messages.shift();
         // Create the notification bar if it doesn't exist
         var bar = document.getElementById("myExtensionNotificationBar");
@@ -80,6 +82,7 @@ function showNotificationInternal() {
         }, 5000);
 
         setTimeout(function () {
+            running == false;
             showNotificationInternal();
         }, 1500);
     }
