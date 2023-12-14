@@ -3,7 +3,7 @@ loadScript("jquery-3.6.0.min.js", function () {
 	loadScript("base.js", function () {
 		setTimeout(function () {
 			if (ping == null) {
-				showNotification("Background script is not responding, please try to restart this page once again");
+				showNotification("The background script is not responding; please try restarting this page again.");
 			}
 		}, 2000);
 		chrome.runtime.sendMessage({ message: "DisableCsp" }, function (response) {

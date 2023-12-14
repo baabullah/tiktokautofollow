@@ -31,11 +31,15 @@ class SelfProfile {
 		})
         .then((result) => { return result.json(); })
 		.then((profile) => {
-			if (profile.message == "error" && profile.data.name == "session_expired") {
-                localStorage.clear();
-                console.log('All data cleared from localStorage');
-				showNotification("Session is expired");
-                callback(profile);
+			if (profile.message == "error" && profile.data.name == "session_expired") {                
+				chrome.storage.sync.clear(function() {
+					localStorage.clear();
+					console.log('All data cleared from localStorage');
+					showNotification("Your session is expired");
+					callback(profile);
+				});
+				
+                
 			} else {
                 var needSync = false;
                 var currentProfileUsername = localStorage.getItem("profile.username");
@@ -47,7 +51,7 @@ class SelfProfile {
                 if (needSync) {
                     _this.useCase.sync(profile.data.user_id_str, profile.data.username, profile.data.sec_user_id, function () {
                         console.log("cloud sync done", profile);
-						showNotification("Succesfully register your account \""+ profile.data.username +"\" into the system");
+						showNotification("Succesfully register your account \""+ profile.data.username +"\" in the system");
                         localStorage.setItem("profile.user_id_str", profile.data.user_id_str);
                         localStorage.setItem("profile.username", profile.data.username);
                         localStorage.setItem("profile.sec_user_id", profile.data.sec_user_id);
@@ -110,7 +114,7 @@ class UseCase {
                 url = _this.replaceUrlParameter(url, "sec_user_id", target.secuid);
                 url = _this.replaceUrlParameter(url, "user_id", target.userid);
                 console.log("will follow " + target.username, url);
-				showNotification("Will follow "+ target.username);
+				showNotification("You will follow @"+ target.username);
                 window.fetch(url, {
                 "headers": {
                     "accept": "*/*",
@@ -145,13 +149,13 @@ class UseCase {
                 });
             } else {
                 console.log("no follow foot print");
-				showNotification("Please follow some random account so we can capture the follow footprint");
+				showNotification("Please follow a few random accounts so we can capture the follow footprint.");
                 //alert("Please follow some random account so we can capture the follow footprint.");
                 callback();
             }
 			
 		} else {
-			showNotification("No more target to follow as of now. Check back later!");
+			showNotification("As of now, there are no more accounts to follow. Please check back later!");
             console.log("no more target to follow as of now");
 			callback();
 		}
@@ -170,7 +174,7 @@ class UseCase {
 						callback("done follow all friends");
 					});
 				} else {
-					showNotification("No account to follow as of now!");
+					showNotification("Currently, there are no accounts to follow!");
 					callback("no backlog available");
 				}
 			} else {
@@ -221,7 +225,7 @@ class ContentScript {
                     console.log(message);
                 });
 			} else {
-				showNotification("Looks like you are not logged in yet into the tiktok");
+				showNotification("It looks like you haven't logged into TikTok yet.");
 				console.log("looks like you are not logged in yet into the tiktok", profile);
 			}
 		});
@@ -236,7 +240,7 @@ jQuery(document).ready(
 			|| window.location.href.indexOf("https://www.tiktok.com/foryou") != -1
 		) {
             monkeyPatchFetchReady(function () {
-				showNotification("Action started..");
+				showNotification("Tiktok Autofollow has started..");
                 const contentScript = new ContentScript();
                 contentScript.init();
             });			
