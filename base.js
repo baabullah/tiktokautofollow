@@ -29,26 +29,16 @@ function observeMonkeyPatchFetch (callback) {
         }, 500);
     } else {
         console.log("monkey patch fetch is ready");
-        monkeyPatchCallback = callback;
-        document.dispatchEvent(new CustomEvent('TriggerDisableCSP', {
-            detail: "disableCSP" // Some variable from Gmail.
-        }));               
+        setTimeout(function() {
+            callback();
+        }, 2500);               
     }
 }
-
-document.addEventListener('ResponseDisableCSP', function(e) {
-	setTimeout(function() {
-        if (monkeyPatchCallback != null) {
-            monkeyPatchCallback();
-        }
-    }, 5000); 
-});
 
 function monkeyPatchFetchReady(callback){
     observeMonkeyPatchFetch (callback);
 }
 
-var monkeyPatchCallback = null;
 var timer = null;
 var messages = [];
 var running = false;

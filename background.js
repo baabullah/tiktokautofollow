@@ -1,30 +1,3 @@
-class CspManager {
-	constructor() {
-
-	}
-
-	disable(id) {
-		try {
-			let addRules = [];
-			let removeRuleIds = [];
-
-			addRules.push({
-				id,
-				action: {
-					type: 'modifyHeaders',
-					responseHeaders: [{ header: 'Content-Security-Policy', operation: 'set', value: '' }]
-				},
-				condition: { urlFilter: "|https*", resourceTypes: ['main_frame', 'sub_frame'] }
-			})
-
-			chrome.browsingData.remove({}, { serviceWorkers: true }, () => { })
-			chrome.declarativeNetRequest.updateSessionRules({ addRules, removeRuleIds });
-		} catch (e) {
-      console.log(e);
-		}		
-	}
-}
-
 chrome.webRequest.onBeforeSendHeaders.addListener(
     (details) => {
       console.log("Request headers:", details);
