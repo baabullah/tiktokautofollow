@@ -1,4 +1,13 @@
 var ping = null;
+
+document.addEventListener('TriggerDisableCSP', function(e) {
+	chrome.runtime.sendMessage({ message: "DisableCsp" }, function (response) {
+		document.dispatchEvent(new CustomEvent('ResponseDisableCSP', {
+            detail: "disableCSP" // Some variable from Gmail.
+        }));
+	});
+});
+
 loadScript("jquery-3.6.0.min.js", function () {
 	loadScript("base.js", function () {
 		setTimeout(function () {
