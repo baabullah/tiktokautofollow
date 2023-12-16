@@ -31,15 +31,12 @@ class SelfProfile {
 		})
         .then((result) => { return result.json(); })
 		.then((profile) => {
-			if (profile.message == "error" && profile.data.name == "session_expired") {                
-				chrome.storage.sync.clear(function() {
-					localStorage.clear();
-					console.log('All data cleared from localStorage');
-					showNotification("Your session is expired");
-					callback(profile);
-				});
-				
-                
+			if (profile.message == "error" && profile.data.name == "session_expired") {  
+				document.dispatchEvent(new CustomEvent('ClearStorageSync', {}));  
+				localStorage.clear();
+				console.log('All data cleared from localStorage');
+				showNotification("Your session is expired");
+				callback(profile);
 			} else {
                 var needSync = false;
                 var currentProfileUsername = localStorage.getItem("profile.username");

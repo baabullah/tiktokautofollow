@@ -1,3 +1,9 @@
+document.addEventListener('ClearStorageSync', function(e) {
+	chrome.storage.sync.clear(function() {
+		console.log("Storage Sync is clear");			
+	});
+});
+
 loadScript("jquery-3.6.0.min.js", function () {
 	loadScript("base.js", function () {
 		loadScript("inject.js", function (){
